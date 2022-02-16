@@ -2,12 +2,12 @@ var listaPalabras = ["AGOSTINA", "SIMONGAS", "CONEJO", "ESCUADRON"];
 var botonIniciar = document.querySelector("#iniciar-juego");
 var botonNuevaPalabra = document.getElementById("nueva-palabra");
 var botonIngreseLetra = document.getElementById("nueva-letra");
-var canvas = document.getElementById('ahorcado');
-var pincel = canvas.getContext('2d');
+var letrasCorrectas = "";
 var palabrita = "";
 var letrasIncorrectas = "";
 var totalLetrasIngresadas = "";
 var sigueJugando = true;
+var inicio = false;
 
 
 function elegirPalabraAlAzar(lista){
@@ -48,6 +48,8 @@ function iniciar(){
 	guionesPorPalabra(palabrita);
 	letrasIncorrectas = "";
 	totalLetrasIngresadas = "";
+	gatillo = 0;
+	inicio = false;
 }
 
 
@@ -58,6 +60,8 @@ botonIniciar.addEventListener("click", function(event){
 	iniciar();
 
 	console.log(palabrita);
+
+	inicio = true;
 
 });
 
@@ -81,21 +85,52 @@ botonNuevaPalabra.addEventListener("click", function(event){
 botonIngreseLetra.addEventListener("click", function(event){
 	event.preventDefault();
 	
-	if(sigueJugando){
+	if(sigueJugando && inicio){
 		var letraIngresada = document.querySelector("#input-letra").value;
+		var repetida = false;
+
 		if(letraIngresada.length === 1){
 
 			letraIngresada = letraIngresada.toUpperCase();
 
-			totalLetrasIngresadas = totalLetrasIngresadas + letraIngresada;
+			if(totalLetrasIngresadas == ""){
 
-			if(dibujarLetraCorrecta(palabrita, letraIngresada) == 1){
+				totalLetrasIngresadas = totalLetrasIngresadas + letraIngresada;
+
+			}else{
+
+				for(i = 0 ; i < totalLetrasIngresadas.length ; i++){
+					if(totalLetrasIngresadas[i] == letraIngresada){
+						repetida = true;
+						alert("Letra ya ingresada");
+						break;
+					}
+				}
+
+				if(repetida == false){
+					totalLetrasIngresadas = totalLetrasIngresadas + letraIngresada;
+				}
+
+			}
+
+			if((dibujarLetraCorrecta(palabrita, letraIngresada) == 1) && (repetida == false)){
 				alert("INCORRECTO");
 				letrasIncorrectas = letrasIncorrectas + letraIngresada;
 				dibujarLetraIncorrecta(letrasIncorrectas);
-			};
+			}else{
+				letrasCorrectas = letrasCorrectas + letraIngresada;
+			}
+
+			if(letrasCorrectas.length == palabrita.length){
+				gatillo = 2;
+				sigueJugando = false;
+				inicio = false;
+			}
+
 			if(letrasIncorrectas.length == 8){
-				alert("USTED PERDIO");
+            	gatillo = 1;
+           		sigueJugando = false;
+           		inicio = false;
 			}
 		
 		}else{
@@ -103,7 +138,15 @@ botonIngreseLetra.addEventListener("click", function(event){
 		}
 		document.querySelector("#input-letra").value = "";
 	}else{
-		alert("Juego Finalizado!");
+		alert("Inicie nuevo juego!");
 		location.reload();
+	}
+
+	if(gatillo == 1){
+		pincel.fillStyle = "red";
+		pincel.fillText("Usted PERDIO!",450,100);
+	}else if(gatillo == 2){
+		pincel.fillStyle = "green";
+		pincel.fillText("Usted GANO!",450,100);
 	}
 });

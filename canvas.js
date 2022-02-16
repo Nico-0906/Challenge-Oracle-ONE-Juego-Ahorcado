@@ -1,3 +1,7 @@
+var canvas = document.getElementById('ahorcado');
+var pincel = canvas.getContext('2d');
+var gatillo = 0;
+
 
 function dibujarGuion(x, y){
 
@@ -139,7 +143,6 @@ function dibujarLetraIncorrecta(letrasIncorrectas){
 
     	case 8:
     		dibujarBrazoIzq();
-    		sigueJugando = false;
     		break;
     }
 }
