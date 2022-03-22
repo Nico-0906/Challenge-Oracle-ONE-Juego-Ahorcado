@@ -108,18 +108,23 @@ botonIngreseLetra.addEventListener("click", function(event){
 				}
 
 				if(repetida == false){
+					
 					totalLetrasIngresadas = totalLetrasIngresadas + letraIngresada;
+					
 				}
 
 			}
 
-			if((dibujarLetraCorrecta(palabrita, letraIngresada) == 1) && (repetida == false)){
-				alert("INCORRECTO");
-				letrasIncorrectas = letrasIncorrectas + letraIngresada;
-				dibujarLetraIncorrecta(letrasIncorrectas);
-			}else{
-				letrasCorrectas = letrasCorrectas + letraIngresada;
+			if(repetida == false){
+				if(dibujarLetraCorrecta(palabrita, letraIngresada) === 1){
+					alert("INCORRECTO");
+					letrasIncorrectas = letrasIncorrectas + letraIngresada;
+					dibujarLetraIncorrecta(letrasIncorrectas);
+				}else{
+					letrasCorrectas = letrasCorrectas + letraIngresada;
+				}
 			}
+			
 
 			if(letrasCorrectas.length == palabrita.length){
 				gatillo = 2;
@@ -146,7 +151,9 @@ botonIngreseLetra.addEventListener("click", function(event){
 		pincel.fillStyle = "red";
 		pincel.fillText("Usted PERDIO!",450,100);
 	}else if(gatillo == 2){
-		pincel.fillStyle = "green";
+		pincel.fillStyle = "lightgreen";
 		pincel.fillText("Usted GANO!",450,100);
 	}
+
+	console.log(totalLetrasIngresadas)
 });

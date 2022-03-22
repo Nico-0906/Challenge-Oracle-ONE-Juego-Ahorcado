@@ -15,7 +15,7 @@ function dibujarLetraCorrecta(palabra, letra){
     var retorno = 1;
 
     pincel.font = "30px Comic Sans MS";
-    pincel.fillStyle = "green";
+    pincel.fillStyle = "black";
 
     for(i=0; i < palabra.length; i++){
       if (palabra[i] == letra){
